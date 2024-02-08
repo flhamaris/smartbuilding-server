@@ -33,30 +33,19 @@ router.post("/", upload.single("video"), async (req, res) => {
     res.status(400).send({ message: "No label provided" })
     return
   }
+  if (!req.body.sequenceName) {
+    res.status(400).send({ message: "No sequence name provided" })
+    return
+  }
 
   // Get the video buffer and label from the request
   const videoBuffer = req.file.buffer
   const label = req.body.label
-
-  // Create the output directory if it doesn't exist
-  const output = path.join(__dirname, `../input_folder/${label}/`)
-  if (!fs.existsSync(output)) {
-    fs.mkdirSync(output, { recursive: true })
-  }
-
-  // Get the next sequence number and create the sequence directory if it doesn't exist
-  const sequenceNumber = utils.getSequenceNumber(output)
-  const sequence = path.join(output, `sequence${sequenceNumber}/viewA/`)
-  if (!fs.existsSync(sequence)) {
-    fs.mkdirSync(sequence, { recursive: true })
-  }
-
-  // Save the video to the sequence directory
-  fs.writeFileSync(path.join(sequence, "input.webm"), videoBuffer)
+  const sequenceName = req.body.sequenceName
 
   // Slice the video into frames and send a response based on whether the slicing was successful
   try {
-    await utils.sliceVideo(videoBuffer, sequence)
+    await utils.sliceVideo(videoBuffer, label, sequenceName)
     res.status(200).send({ message: "File uploaded successfully" })
   } catch (err) {
     res.status(500).send({
