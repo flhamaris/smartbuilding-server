@@ -55,3 +55,21 @@ Built With:
 - [Express](https://expressjs.com/) - The web framework used
 - [@azure/storage-blob](https://www.npmjs.com/package/@azure/storage-blob) - Azure Blob Storage client library for JavaScript
 - [multer](https://www.npmjs.com/package/multer) - Middleware for handling multipart/form-data
+
+## API Endpoints
+
+### `POST /upload`
+
+This endpoint is used to upload a video for processing. The video is expected to be sent as a file in a multipart/form-data request. The request should also include a 'label' and 'sequenceName' field in the body. The video is sliced into frames, which are saved as PNG images in a directory structure based on the label and a sequence number.
+
+#### Request Parameters
+
+- `video`: The video file to be uploaded. This should be included in the request as a file in a multipart/form-data format.
+- `label`: A label for the video. This should be included in the body of the request.
+- `sequenceName`: A name for the sequence. This should be included in the body of the request.
+
+#### Response
+
+- If the video is sliced successfully, the endpoint will send a 200 response with a success message.
+- If an error occurs while slicing the video, the endpoint will send a 500 response with an error message.
+- If no file is uploaded or no label or sequenceName is provided, the endpoint will send a 400 response with an error message.
