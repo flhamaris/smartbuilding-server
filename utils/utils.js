@@ -73,9 +73,13 @@ const sliceVideo = (videoBuffer, label, sequenceName) => {
     const ffmpegCommand = ffmpeg()
       .input(videoStream)
       .inputFormat("webm")
-      .outputOptions(["-vf fps=20"])
+      .outputOptions([
+        `-vf fps=${process.env.FRAME_PER_SECOND_SUB_SAMPLING}`,
+        `-vsync vfr`,
+      ])
       .outputFormat("image2pipe")
       .on("end", () => {
+        console.log(`${frameCounter} frames processed`)
         frameCounter = 0
         resolve()
       }) // Resolve the Promise when FFmpeg finishes processing

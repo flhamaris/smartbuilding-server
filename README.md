@@ -47,6 +47,7 @@ The server requires the following environment variables:
 
 - `AZURE_STORAGE_CONNECTION_STRING`: The connection string for your Azure Blob Storage Account
 - `AZURE_STORAGE_CONTAINER_NAME`: The name of the Azure Blob Storage container to query to
+- `FRAME_PER_SECOND_SUB_SAMPLING`: The subsampling value if needed for the video uploaded. Default is 20 fps.
 
 These should be placed in a `.env` file in the root of your project. You can create your `.env` from the `.env.local` included.
 
